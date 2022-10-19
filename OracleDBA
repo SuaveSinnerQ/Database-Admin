@@ -1,0 +1,36 @@
+TNS_Admin:         
+tnsnames.ora
+mysid=
+(description =
+  (address_list= 
+    (address= (protocol = TCP)(Host = ServerA)(Port = port#))
+ )
+ (Connect_Data =
+  (service_name = DatabaseName)
+ )
+)
+# Connecting to Database Instance
+#username and Password
+#Hostname (1st: find host name)
+#DB Server Name
+#Port Name
+# Protocol
+2nd: ps -ef | grep smon (man smon)
+cat tnsnames.ora
+tnsping (utility to check if remote user/device is reachable) device_name | "string w/in the quotation" 
+
+## ps -ef|grep ora | wc -l 
+## connect sqlplus / toad / developer
+
+##listener.ora 
+  Show TNS_admin location and listener.ora file
+  select sid, server from v$session:
+
+Listener =
+  (description_list =
+    (description =
+      (Address = (protocol = IPC)(key = extpro 1))
+      (address = (protocol = TCP)(host = ServerA)(port = port#))
+    )
+  )
+  
