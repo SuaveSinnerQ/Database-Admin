@@ -1,0 +1,128 @@
+Powershell sample piping & cmdlets:
+    i. Get-Help Format-Table-Detailed | Format-Table -[Full|Online|Examples]
+       get-Service -ServiceName|Name 'Dnscache'
+                   -Select-Object Name 
+       polymorphism: 
+       sa: Get-Service | Select-Object Name
+       Get-Command | Where-Object { $_.parametersets.count -gt 2 } | Format-List Name
+       same as: gcm | ? { $_.parametersets.count -gt 2 } | fl Name (abbreviated)
+       Abbreviation: Set-Item (si)
+       
+      Scripting Automation:
+        a. Powershell Security:
+            i. Execution safety feature:
+                -Config files & runs scripts
+                -Prevent exec of malicious scripts
+            ii. Execution Policies:
+                - all signed, Bypass, Remote signed 
+                  restricted, undefined, & Unrestricted
+                -
+        b. Setting exec policy:
+           i. change exec to unresticted:
+              Set-ExecutionPlicy -ExecutionPolicy Unrestricted
+              ## unrestricted for specified user:
+                      '                 '         Unrestricted -Scope [username: CurrentUser]
+              ## launch powershell w/execution policy set
+              pwsh.exe -ExecutionPolicy Unrestricted 
+           
+            ii. Execution Policy Precedence: 
+                1.Groupt Policy: MachinePolicy 
+                   2. Group Policy: UserPolicy
+                     3. Execution Policy: Process (or pwsh.exe -ExecutionPolicy)
+                     4. Exec Policy: CurrentUser
+                     5. Exec Policy: LocalMachine 
+         
+       
+       I. Creating scripts & attr var: sample_script.ps1
+            i.  $Service = Read-Host "Please get a fucking life!!!" 
+            ii. $var = Get-Service -Name 'Dnacache'
+                $variable = Get-Service -Name -$Service 
+                
+               Write-Host $var.Name -ForegroundColor|Fg Navy
+               Write-HOst $var.DisplayName
+               
+               Set-Location -Path *C:\Users\Trainers\Doc
+               
+               
+               
+               
+        II. PowerShell Functions: (core concepts for script)
+            a. Using Args: (args not declared @ function root level) 
+                -Can utilize multiple args w/in function
+            
+            b. Parameters: 
+                -Can be called in any order when exec the function
+                -Enforce postion of an args in the def of the function
+                -Para can lead the use of the function
+                i. The param Function:
+                    Param( 1.[Data Type] 2. Var Name 3. Default Value(s) )
+                    sa: Param( [string]     $Message =       "GAFL"      )
+                    also: Param( [string]   $Message                     ) (no value is specified)
+                    
+            
+             c. Arguments & Parameters:
+                i. Function w/Arguments                 Function w/Parameters
+                Function Display-Message()              Function Display_Message()
+                {                                       {
+                    [String]$Value1 = $args[0]              param(      [String]
+                    [String]$value2 = $args[1]          $Text 
+                                                            )
+                    Write-Host $Value1 $Value2              Write-Host  $Text
+                }                                       }
+                
+              d. Para Args
+                    i. Mandatory: force the user to pass this para value to the function
+                    ii. ValidateSet: limit user to list of items to selectd form for the input
+                            sa: a para w/enable|disable option instead of creating 2 functions
+                    iii. ParaSetName: logical group para for specific use cases
+             
+             
+             PS_script_functions:
+                function Display-Service|Message-[#]()
+                { 
+                    Write-Host "Do me Fking favor and get a life!!!...make a movie??? from your own script. Best joke i've heard!!!"
+                    [string]$Value = $args[0]
+                    [String]$Value = $args[1]
+                    write-host $value1 $value2 
+                    
+                }
+                 function Display-Service|Message-[2]()
+                { 
+                    param(
+                        [Parameter(AttributedValues)]                       ## [parameter(Mandatory=$true)]
+                        [ValidateSet("Golf","Basketball","SysAdmin","Fishing","getBeefy","NewWhip","NewJOBS")]
+                                ##validateSet is a list of options to be utilized in this function
+                        [string##declare value as string]$ParameterName]    ## [string]$text     
+                    )
+                    Write-Host "Options for this function is:" $ParameterName && $text 
+                }
+                            
+                    
+                   
+                    
+             
+                
+            
+               
+       
+
+Database Backups:
+    a. Constant & live backups 
+        i. backup is iden to primary database at the moment it's created
+        ii. backups age: fall out of sync & deprecate 
+        iii. 
+    b. PostgreSQL database dump
+        i. set statement_timeout = 0
+           set idle_in_transaction_session_timeout = 0;
+           "client_encoding = 'UTF8' ;
+           "standard_conforming_strings = on;
+           Select pg_catalog.set_config('search_path', '', false);
+           set check_function_bodies = false;
+           xmloption = content;
+           client_min_messages = warning;
+           row_security = off;
+           
+       name: inventory; type: SCHEMA; schema: =; Owner: postgres
+       
+       Create Schema inventory;
+       
