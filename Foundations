@@ -8,6 +8,57 @@ Powershell sample piping & cmdlets:
        same as: gcm | ? { $_.parametersets.count -gt 2 } | fl Name (abbreviated)
        Abbreviation: Set-Item (si)
        
+    ii. Get-Command | where-object |? { $_.CommandType -eq(#query operator) 'cmdlet' }
+                ## to retrieve cmdlet 
+                                      { $_.Name -like '*invoke*' } ## get name & filer list of invoke
+       ## join 2types of filers: filter has to be inside () to be exec
+          { ($_.Name -like '*MTFO*' ) -and| !($_.CommandType -eg 'cmdlet') }
+          ## mix and match: 
+      ## para in a cmd to filter:
+          ## Get-Command -CommandType Cmdlet | ? { $_.name -like '*invoke*' }  ## attri to $variable 
+          ## instead of using {}: Get-Service | ? -Property Status -eq -Value 'crawling' 
+          ## use a designated dash filter prop
+             Get-ChildItem -Path "C:\Users\Trainers" -Filter *ps1 ## the get-childitem will go to path "c..."
+                    ### not everycmd will support the filter prop 
+                    ## -Filter is unique to a few cmd; where-Object is key to filtering values
+                    
+A. Ternary cmds: instead of using if/then have brace expansion () & ?(where-Object): more concise
+
+   "messageOne" = (( $a -lt $b) ? "Removed: this is message #" ! "Not Removed: This is message #") 
+   
+   sa: $CustomTernaryObject = [PSCustomObject}@{   ##@ is inclusive so doesn't have to specify objects
+       "messageOne" = (( $a -lt $b) ? "Removed: this is message #" ! "Not Removed: This is message #")
+       "messageTwo" = (( $a -lt $b) ? "Removed: this is message #" ! "Not Removed: This is message #")
+       "messageThree" = (( $a -lt $b) ? "Removed: this is message #" ! "Not Removed: This is message #")
+                    
+
+B. SwitchStatement:
+     $value = Read-Host "Bitch scheme to deceived & make it as though their fawna is elitist"
+     switch ($value)
+     { 
+        fawna1 { 'wow...'}
+        fawna2 { 'carrots & cumcumbers' }
+        fawna3 { 'grocerybagvisage & carrots' }
+        fawna4 { 'Closet_Turkeys & princeCharming' }
+     }
+     
+     
+     Define Custom Help:
+     Function Add-Numbers()
+     {
+        param(
+            [int]$first,
+            [int]$second,
+            [int]$third,
+            [string]$fourth,
+        }
+        $result = $first + $second + $third +$($fourth)
+        write-host "$($first) +$($second) + $($third) +$($fourth)"
+      }
+     
+  
+   
+       
       Scripting Automation:
         a. Powershell Security:
             i. Execution safety feature:
@@ -96,6 +147,8 @@ Powershell sample piping & cmdlets:
                     )
                     Write-Host "Options for this function is:" $ParameterName && $text 
                 }
+                
+   
                             
                     
                    
