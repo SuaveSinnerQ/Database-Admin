@@ -40,6 +40,7 @@ B. SwitchStatement:
         fawna2 { 'carrots & cumcumbers' }
         fawna3 { 'grocerybagvisage & carrots' }
         fawna4 { 'Closet_Turkeys & princeCharming' }
+        DefaultFawna { 'whenever existing value !selected' }
      }
      
      
@@ -53,12 +54,139 @@ B. SwitchStatement:
             [string]$fourth,
         }
         $result = $first + $second + $third +$($fourth)
-        write-host "$($first) +$($second) + $($third) +$($fourth)"
+        write-host "$($first) +$($second) + $($third) +$($fourth) + $($result)" 
       }
-     
-  
+     ### defines a function: 
+     get-help [functionName: Add-Numbers] 
+ 
+
+C. Navigating file system:
+    i. PowerShell vs Bash
+        a. PS Get-ChildItem cmd will display more info, SA last mod, location & file size
+           -returns an entire object
+        b. bash: cmds only return strings value
+        
+  Common Directory & File Cmdlets
+    i.  Get-ChildItem       New-Item                           Copy-Item
+    ii. Remove-Item         Get-Location(for ps_script)        Set-Location
+    iii. New-PSDrive        Get-Content
+    ## get-childItem cmd & return to a folder:
+    Get-ChildItem C:\
+    Get-ChildItem  -Path C:\
+    
+    ## Return all items in a folder including System & Hidden Items
+    Get-ChildItem -Force C:\
+    
+    ## return all text files in current dir & all subdir
+    Get-ChildItem -path C:\Doc\*.pdf -Recursive -Force 
+    
+    B. Set-Location Command
+        -Set the current dir location
+        -validation can be seen by using: -PassThru parameter
+        -PS aliases: cd, chdir, or sl 
    
+    C. Manage Files & Dir:
+       sa: get-ChildItem -Path $Location -Recurse -include|exclude *.csv 
+                                                  | ? -FilterScript { ($_.LastWriteItem -eq date() }
+           remove-Item   -path "$($Location)\PSFolder\lol 
+       sa: cp|delete|rename-Item -path "$($Location)\users.wow" -Destination          
+           syntax: verb-noun -name|prop [source] -destination [tobecopied] 
+           Rename-Item    -Path "$($Location)\~" -NewName "usersCopy & then delete to have propietary wow...no one knows!!!" 
+       ##alternatively:
+           get-childitem "$($Location)\MTFO\*.wow" |Rename-item -NewName { $_.Name -Replace '\.text$', '.bak' }
+    
+    D. Retrieve Data
+        i. $location = "C:\users\trainers\PSMTFO\data"
+        ii. ps cmd: 1...100 | Foreach-Object { Add-Content -Path "$($location)\PSNumbers.txt" -Value "Line $_."
+                    ## loop for each content & then add to file in specified location
        
+        $path = "$($location)\MenuData.xml"
+        $XPath = "/Desert_menu/name"
+        Select-Xml -Path $Path -XPath | Select-Object -ExpandProp Node
+        
+        get-process | Export-[file: pdf, csv, mpeg "$($Location)\Processes.csv" -Delimiter :|;|-|"
+        $processes = Import-Csv -Path "$($location...)"
+        
+        Incorporate loop: ForEach|While|Until-Object
+        sa: import-Csv "$($location)\Employees.csv" | ForEach-Object {
+            write-host "$($_.FirstName), $($_....) and !$($_.Phrasal)" 
+    
+    E. Generate JSON file:
+       sa: systeminfo /fo CSV | ConvertFrom-Csv | Convertto-json | Out-file "$($location)\ComputerInfo.json"
+           get-content -path "$($Location)\ComputerInfo.Json" | ConvertFrom-Json | ForEach-Object {
+           Outgrid-View "...multiple ()..." 
+           
+      $jsonObject = @{}
+      $arrayList = New-Object System.Collections.Arraylist
+      $arrayList.Add(${"Acuity"="Gamutof_software"; "Duration"="Howlong";"Protective_wear"="ribbed_Rubber";})
+      get-ArrayList | OutGrid-View
+      
+    Var: $Languages = @{"Languages"=$arrayList;}
+         $Languages
+    ## to create root node & sub-strata
+    $jsonObject.Add("data", $Languages)
+    $laguages 
+    
+    ### specify: sa: $jsonObject | Convertto-Json -Depth 5.5
+  
+ 
+ F. Powershell Remoting:
+    i. A feature enable admin to run cmds on remote sys't
+    ii. cxn admin local ps session w/a session runnin on a remote sys't
+    iii. cmd entered local sys't--> remote & exec locally
+       -Uses Windows Remote Management (WinRM) framework to provide remoting feature
+            : part of WinRM: PowerShell Desired State Config (DSC) & WIndows Mgmt Instrumentation (WMI)
+    iv. Uses TCP, HTTP & HTTPS comm
+ 
+ G. Powershell Functions:
+    1.##simplest to employ PowerShell Remoting:
+        i. Pass -ComputerName Para w/in cmds
+        ii. doesn't req session or any special config
+    2. Invoke-Cmd
+        i. cmdlet will run PS on local or remote computer
+        ii. uses PS session
+        iii. capability to return all output from cmd w/errors
+        iv. Uses -ComputerName para
+    3. Interactive PS Session:
+        i. uses ssh
+    
+    a: powershell remoting: 
+        i. Enable-PSRemoting
+        ii. Get-PSSessionConfiguration 
+        iii. $session = New-PSSession -ComputerName localhost
+        then: invoke-Command -Session $session -ScriptOcclude { $PSVersionTable }
+              enter-PSSession localhost
+              
+  H. 2ndary host output:
+        i. write-host "primary Message" && Write-Host "secondary Message"
+        ii. write-Error "Primary Error" && write-Error ""
+       
+       
+       
+  $variable = $null
+  $variable
+  if ($null -lt $variable) { "Np Value is Found" } else { $variable }
+ 
+ 
+ I. Practical PS remoting:
+    i. set variables:
+        $Location = "C:\Users\MTFO_GAPING_MIDGET&&FLOORMAT_TURKEYs"
+        
+        ##: retrieve desktop settings 
+        $desktop = Get-CimInstance -ClassName Win64_Desktop
+        
+        ##retrieve biosinfo:
+        $bios = Get-CimInstance -ClassName Win64_Bios
+        
+        ##retrive processor info
+    
+    ii. Cmd to execute cmd on another remote device: 
+        invoke-command -Session $session -ScriptBlock { "$($Location)\Remote.ps1" }
+        
+        
+  
+  
+  
       Scripting Automation:
         a. Powershell Security:
             i. Execution safety feature:
