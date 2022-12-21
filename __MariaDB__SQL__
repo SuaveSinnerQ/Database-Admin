@@ -120,13 +120,138 @@ Ia. MariaDB features:
                         -Not a range
                     sa: 7-943-20,3-56110-119
                         2 rep streams, 2 sources of writes
+                
+                    d. MariaDB GTID rep setup
+                        -1: Change master to 
+                             ##
+                        sa: Change Master "streamBaptized" TO 
+                          i. Master_host='db1.company.com',
+                             Master_user='username'
+                             Master_pw='password'
+                             Master_use_GTID=current_pos;
+                             Start Slave "streamBaptizedBitchMTFO";
+                             Start All Slaves; for multiple stream
+                             Stop Slave "Baptized...for tampons";
+                        gist:Set @@default_master_connection="streamname";
+                        
+                         ii. Show Slave Status
+                             Show Slave "..." Status\G
+                             Set @@default_master_connection="streamname";
+                             Show Slave Status\G
+                             Show Slaves Status\G
+                             
+                         iii. Audit Plugin
+                              -MySQL (audit_log.so)
+                              -MariaDB (server_audit.so)
+                                 -log output
+                                    i. Server_audit.log
+                                    ii. datadir; syslog
+                                    iii. server_audit_output_type=Syslog
+                                      -Syslog Config
+                                          -audit file config:
+                                            -Server_audit_file_path='/var/log/mysql/audit.log'
+                                    
+                              a. Audit user logging: 
+                                -Exclude|include: 
+                                  -server_audit_excl|incl_users
+                                  field: each line is a single event fs=csv
+                                  sa: 19602911 08:34:06, dbserver, MTFOBaptised, localhost,
+                                               21,Slurpslurp, query, 'insert into virt_cols (..,...)values(...)',
+                                               ...Connect|Disconnect,,,0
+                                
+                                -MySQL audit log Output
+                                  -Audit.log, datadir
+                                  ## to change audit_log_file='/var/log/mysql/audit.log'
+                                  
+                                -MySql audit events
+                                    -Querriers, logins, audit_log_policy, all, none
+                                    i.<?xml version="1.0" encoding="UTF-8"?>
+                                    ii. <audit>
+                                          <audit_pellucid> 
+                                            <timestamp> </...>
+                                            <log_id> </...>
+                                            <name>connect|disconnect </...>
+                                            <Status>0</status>
+                                            <status_code>0</status_code>
+                                            <user>username[username] @ <string sa: localhost> [DNS|IP] </...>,<OS_login></...>
+                                            <host>; <ip>; <command_class>connect|disconnect</command_class>
+                                            <sqltext> Query ; </sqltext>
+                                            <Priv_user>BaptisedBitch</>, <Proxy_user></>, <DB>BaptisedDentured</>,
+                                          <audit_diaphanous>
+                                        </audit>
+                                            
+                                   iii. Authen Plugin (gist varies by server)
+                                        Grant perm On Sinners To User@MTFO Iden by 'password'; 
+                                            ## my sql identified 'with'; MariaDB 'via'
+                                            [mysql]
+                                              default_authen=mysql_native_password
+                                        
+                                        Unix Socket Plugin
+                                          Non-Windows, local connection, non-networked, no TCP/IP, already logged in on the OS
+                                          
+                                          
+                                        a. MariaDB
+                                            -free authen plugins
+                                            -ship with MariaDB
+                                        b. MySQL
+                                            -free & commercial plugins
+                                   
+                                   iv. PAM (authen modules)
+                                        a. pluggable, authen, modules
+                                        b. /etc/shadow/, LDAP, One-time password, combination, *
+                                        c. auth_pam.so (pam modules)
+                                          i. mysql 
+                                              -Commercial extension
+                                              -authentication_pam.so
+                                          ii. Grant for Pam authen
+                                              mysql> Grant select on Nope_newnew.*
+                                                     To read_only@webserver.companyname.com
+                                                     Identified with authentication_pam
+                                                     AS 'service=mysql.users=read_only';
+                                                     
+                                              ##specify more than one group in group mapping
+                                                fs=csv,
+                                                sa:  AS 'service=mysql, users=read_only, username=read_only'
+                                              
+                                          iii. MariaDB PAM authen grant (there's no group mapping)
+                                              
+II. Geographic Info system (GIS)
+    i. Supports via: Spatial extensions, OpenGis model, 
+    ii. geometry, point (x|y-coor), polygon (set of(x,y) coor
+    iii. Gis Datatypes in Mysql
+      -Curve, linestring, multipoint, 
+      -Using geo info sys't
+          a. GeomFromtText('point(1,5)');
+              ## could be set as var or inserted 
+              sa: set @point = GeomFromtext('Point(10,20)');
+                  set @line = LineFromtext('Linestring(10 20, 30 55)');
+                  Insert into geom_example (...) values(@point,'...'),(@line,'...');
+     make database table as complex geometric shape
+          i. set var, select contains|within(@var, @var);       
+          ii. add spatial index: sa: add spatial index (shape); 
+    
+    IIa. MariaDB GIS
+          i.  ST_buffer(), geometry, radius
+          ii. Geometrical set arithmetic
+              a. ST_intersection(geom1, geom2), ST_union(geom1, geom2), st_symdifference(geom1,geom2)
+              b. Difference: expanded predicates
+                  i.  ST_intersects|crosses(geom1, geom2)
+                  ii. ST_equals|Disjoint|Touches(geom1, geom2)
+              c. Advanced Features
+                  i. Sphinx storage engine plugin, audit plugin, Authen plugins, server thread pooling
+    IIb. 
+              
+          
+                                   
+                             
+                            
                         
                         
                 
                 
                 
-            -
-            -
+            
+            
           
                 
         
