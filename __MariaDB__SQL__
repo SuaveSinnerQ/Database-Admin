@@ -1,0 +1,135 @@
+I. MariaDB GTID(global transaction id) example (mariadb.org)
+    sa: 7-943-20
+        7 is domain iden; 943 is server id; 20 is the sequence not a range
+        
+
+Ia. MariaDB features:
+    -Virtual Columns, User Stats, Authen plugin
+    #stats: to see
+        - set global userstat=1,
+        - info_schema tables & show commands
+        -Stats areas:
+            -4 keywords: user|client|table|index_stats
+            -keywords workds like modules sa: user_info.User_Statistics
+            sa: Show client_stats\
+    i. Virtual Columns (no keys, no foreign keys)
+        -Can't alter table[change|mod] Virtual
+        -can't change a regular column to Virtual
+        -def sim to reg cols
+        -have name & data type
+            -have def to cal using alias
+            sa: Create table if (!(Sinners)
+                driver_length int not null nan as({methods|functions}) Virtual 
+                    ## keyword virtual at the end
+                unixtime varchar(100) not null,
+                Contingent Datetime as (From_unixtime(unixtime)) virtual|persistent); 
+                    ## either virtual|persistent 
+    ii. Persistent Columns (type of virtual columns)
+        -Calculate data one & store, allows indexes
+        sa: Select driver_length from Sinners
+            where Contingent like '%irons%
+        ## set global userstats=1;
+        ## Foreign key persistent limitations
+            - no on update cascade
+            - no on update set null
+            - no on delete set null
+            
+    iii. Aria progess reporting
+        -Check table
+        -repair table
+        -analyze table
+        -optimize table 
+        ## to see errors| alert
+           * Show alert; 
+           
+     iv. Sphinx Storage Engine
+        -To check: Select * From Info_schema.engines
+                   Where Engine='Sphinx'; 
+        ## show gist: Show global var like '...'; 
+           \! to run cmd: 
+        -extra Sphinx SE columns
+            -Integer, Timestamps, Bigint, varchar, float
+        -Special attributes:
+            @methods; @time|distinct|count or _sph_methods
+            
+     v. HandlerSocket
+        -Worker threads, No optimizer, No parser
+        -install gist: Install plugin handlersocket soname 'handlersocket';
+        # config handlersocket (at least 3 options)
+            -Global variables
+                -Static, Restart needed
+            i.Handlersocket_address
+                -Handlersocket_address='domainip|ip'
+            ii. Handlersocket_port (a read port)
+                -handlersocket_port ='9998'
+            iii. Handlersocket_port_wr
+                -Handlersocket_port_wr='9999'
+       ## config: vi /etc/my.cnf 
+          sa: handlersocket_address|port|port_wr='...'
+          
+         i. HandlerSocket client lib:
+            -JS, ruby, C++, java, python, perl, php, scala & haskell
+         ii. HandlerSocket Auth
+            -Plain text, Handlersocket_plain_secret|secret_wr
+            -handlerSocket_threads|threads_wr
+            
+      vi. Global transaction identifiers (GTIDs) & failover
+            i. Traditional MySQL replication
+                -Master writes to binary log
+                -slave reads binary log
+                -slave applies changes, binary log file name & position
+                -binary log local to server
+                
+           ii. Changing the master
+            -Stop the slave
+            -Get position on current master
+            -Figure out position on new master
+            #Global transaction id (benefits of GTIDs)
+                -Identify, transaction, globally
+                -Easily change master, just change host & port
+                -Failover easier
+            ##GTIDs have 2 parts:
+                -Source iden (server UUID)
+                    -b8617fde-2810-11e4-bf16-98fe9446b48a
+                -Trans iden (Sequence #)
+                    -b8617fde-2810-11e4-bf16-98fe9446b48a:1-147
+                        this GTID has seq #: 1-147
+               iii. multiple masters
+                    -*GTID
+                        -"GTID set"
+                        -Comma-sep list
+                        -b8617fde-2810-11e4-bf16-98fe9446b48a:1-147,
+                        -de3dd4d9-2812-11e4-beef-e83935a55-6:1-203
+                    -MySQL GTID Rep setup
+                    [mysqld]
+                    gtid-mode=ON
+                    log-bin
+                    log-slave-updates
+                    enforce-gtid-consistency 
+                  
+               iv. MariaDB three-part GTID
+                    a. Domain iden
+                        -int, identifies the stream, dif for each write source
+                    b. Server ID
+                        -Dif for each machine
+                        -Iden ori server
+                    c. Seq #
+                        -same as MySQL
+                    sample: 7-943-19+ (7 is domain iden)
+                        -943 is server id, 19+ is sequence
+                        -Not a range
+                    sa: 7-943-20,3-56110-119
+                        2 rep streams, 2 sources of writes
+                        
+                        
+                
+                
+                
+            -
+            -
+          
+                
+        
+          
+            
+             
